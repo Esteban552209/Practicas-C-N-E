@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'views/inicio_view.dart';
+import 'views/equipos_view.dart';
+import 'views/salones_view.dart';
 
 void main() => runApp(const MyApp());
 
@@ -13,10 +16,14 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF2A9D8F),
-          brightness: Brightness.light,
+          seedColor: Colors.cyan,
+          brightness: Brightness.dark,
         ),
-        scaffoldBackgroundColor: const Color(0xFFF8F9FA),
+        scaffoldBackgroundColor: const Color(0xFF121212),
+        navigationBarTheme: const NavigationBarThemeData(
+          backgroundColor: Color(0xFF1E1E1E),
+          indicatorColor: Colors.cyan,
+        ),
       ),
       home: const MainNavigator(),
     );

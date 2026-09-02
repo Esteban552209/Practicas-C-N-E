@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+/* ── SweetAlert2 PriceDrop theme ─────────────────────────────── */
+.swal-pricedrop {
+  border: 1px solid #262626 !important;
+  border-radius: 1rem !important;
+  box-shadow: 0 25px 50px -12px rgba(185, 28, 28, 0.15) !important;
+}
+
+.swal2-timer-progress-bar {
+  background: #b91c1c !important;
+}
+
+.swal-btn-confirm {
+  border-radius: 0.5rem !important;
+  font-weight: 700 !important;
+  padding: 0.6rem 1.5rem !important;
+}
+
+.swal-btn-cancel {
+  border-radius: 0.5rem !important;
+  font-weight: 700 !important;
+  padding: 0.6rem 1.5rem !important;
+}
+
+.swal2-title {
+  font-weight: 900 !important;
+  letter-spacing: 0.05em !important;
+}
