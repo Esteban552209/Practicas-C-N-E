@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+
 import '../services/api_service.dart';
+import '../widgets/modal_crear_salon.dart';
+import '../widgets/modal_opciones_salones.dart';
 
 class SalonesView extends StatefulWidget {
   const SalonesView({super.key});
@@ -14,14 +17,39 @@ class _SalonesViewState extends State<SalonesView> {
   @override
   void initState() {
     super.initState();
-    _futureSalones = ApiService.getSalones();
+    _cargarSalones();
+  }
+
+  void _cargarSalones() {
+    setState(() {
+      _futureSalones = ApiService.getSalones();
+    });
+  }
+
+  void _mostrarModalCrearSalon() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) {
+        return ModalCrearSalon(
+          onGuardado: () {
+            Navigator.pop(context);
+            _cargarSalones();
+          },
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Salones', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text(
+          'Salones',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -29,11 +57,23 @@ class _SalonesViewState extends State<SalonesView> {
         future: _futureSalones,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator(color: Colors.cyan));
+            return const Center(
+              child: CircularProgressIndicator(color: Colors.cyan),
+            );
           } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}', style: const TextStyle(color: Colors.redAccent)));
+            return Center(
+              child: Text(
+                'Error: ${snapshot.error}',
+                style: const TextStyle(color: Colors.redAccent),
+              ),
+            );
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text('No hay salones creados', style: TextStyle(color: Colors.grey)));
+            return const Center(
+              child: Text(
+                'No hay salones creados',
+                style: TextStyle(color: Colors.grey),
+              ),
+            );
           }
 
           final salones = snapshot.data!;
@@ -47,13 +87,33 @@ class _SalonesViewState extends State<SalonesView> {
                 elevation: 0,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
-                  side: BorderSide(color: Colors.cyan.withOpacity(0.3), width: 1),
+                  side: BorderSide(
+                    color: Colors.cyan.withValues(alpha: 0.3),
+                    width: 1,
+                  ),
                 ),
                 margin: const EdgeInsets.only(bottom: 12),
                 child: ListTile(
-                  title: Text(salon['nombre'], style: const TextStyle(fontWeight: FontWeight.w600)),
-                  trailing: const Icon(Icons.arrow_forward_ios, color: Colors.cyan, size: 16),
+                  title: Text(
+                    salon['nombre'],
+                    style: const TextStyle(fontWeight: FontWeight.w600),
+                  ),
+                  trailing: const Icon(
+                    Icons.arrow_forward_ios,
+                    color: Colors.cyan,
+                    size: 16,
+                  ),
                   onTap: () {
+                    showModalBottomSheet(
+                      context: context,
+                      backgroundColor: Colors.transparent,
+                      builder: (context) => ModalOpcionesSalon(
+                        salon: salon,
+                        onAccionCompletada: () {
+                          _cargarSalones();
+                        },
+                      ),
+                    );
                   },
                 ),
               );
@@ -64,6 +124,7 @@ class _SalonesViewState extends State<SalonesView> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.cyan,
         onPressed: () {
+          _mostrarModalCrearSalon();
         },
         child: const Icon(Icons.add, color: Colors.black),
       ),
