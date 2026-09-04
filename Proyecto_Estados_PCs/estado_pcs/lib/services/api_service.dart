@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class ApiService {
-  static const String baseUrl = 'http://192.168.1.6:3000';
+  static const String baseUrl = 'http://192.168.137.1:3000'; // IPv4 Del computador
 
   // Obtener lista de salones
   static Future<List<dynamic>> getSalones() async {

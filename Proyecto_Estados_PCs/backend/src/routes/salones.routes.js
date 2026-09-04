@@ -5,7 +5,7 @@ const router = Router();
 
 // GET salones
 router.get('/', async (req, res) => {
-    const { data, error } = await supabase.from('salones').select('*');
+    const { data, error } = await supabase.from('salones').select('*').order('nombre', {ascending: true});
     if (error) return res.status(500).json({ error: error.message });
     res.json(data);
 });

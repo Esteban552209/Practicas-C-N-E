@@ -16,6 +16,19 @@ router.get('/:salon_id', async (req, res) => {
     res.json(data);
 });
 
+// POST equipos/
+router.post('/', async (req, res) => {
+    const { codigo, salon_id } = req.body;
+    
+    const { data, error } = await supabase
+        .from('equipos')
+        .insert([{ codigo, salon_id }])
+        .select();
+        
+    if (error) return res.status(500).json({ error: error.message });
+    res.status(201).json(data);
+});
+
 // PATCH equipos/:id/reportar
 router.patch('/:id/reportar', async (req, res) => {
     const { id } = req.params;
